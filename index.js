@@ -5,16 +5,16 @@ const songs = require('./SongsDB.json');
 
 const app = express();
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3001',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.get('/api/songs', (req, res) => res.send({ songs }));
 app.get('/api/songs/:id', (req, res) => {
   const song = songs.find(s => s.id === parseInt(req.params.id));
   if (!song) {
-    return res.send('The song, you are looking for is not found!');
+    return res.status(404).send('The song, you are looking for is not found!');
   }
   res.send(song);
 });
